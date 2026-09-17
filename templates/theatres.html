@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %} CineFare {% endblock %}
+{% block css %}
+<style>
+   .avaliable {
+      display: flex;
+      justify-content: right;
+   }
+
+   .avbl-element {
+      display: flex;
+      margin-right: 10px;
+   }
+
+   .circle {
+      padding: 4px;
+      margin-top: 10px;
+      border-radius: 4px;
+      height: 5px;
+   }
+
+   .bposter {
+      margin: 20px 0 20px 50px;
+   }
+
+   .bposter img {
+      border-radius: 5px;
+      border: white solid;
+   }
+
+   .theatre {
+      display: flex;
+      margin-top: 10px;
+   }
+</style>
+{% endblock %}
+
+{% block body %}
+<div>
+   <div style="display: flex;  background-color: #2a2c34;">
+      <div class="bposter">
+         <img style="width: 70%;" src="{{movie.movie_poster}}" alt="movie poster">
+      </div>
+      <div class="title">
+         <br>
+         <div style="color: aliceblue;">
+            <h1>{{movie.movie_title}}</h1>
+            <p>&#8226; 2h 44min &nbsp;&#8226; {{movie.genre}} &nbsp;&#8226; U/A &nbsp;</p>
+            <br>
+         </div>
+         <div style="display: flex; margin-top: 80px;">
+            <br>
+            <a class="btn btn-danger" href="/{{city}}/movie/{{movie.movie_id}}/alltheatres/{{date}}/"
+               style="margin-left: 10px; margin-bottom: 10px; padding-bottom: 0px; margin-right: 10px;">
+               <p style="font-size: small;">{{date|date:"M"}}<br>{{date|date:"d"}}</p>
+            </a>
+            <a class="btn btn-danger" href="/{{city}}/movie/{{movie.movie_id}}/alltheatres/{{tom}}/"
+               style="margin-bottom: 10px; padding-bottom: 0px; margin-right: 10px;">
+               <p style="font-size: small;">{{tom|date:"M"}}<br>{{tom|date:"d"}}</p>
+            </a>
+            <a class="btn btn-danger" href="/{{city}}/movie/{{movie.movie_id}}/alltheatres/{{dat}}/"
+               style="margin-bottom: 10px; padding-bottom: 0px; margin-right: 10px;">
+               <p style="font-size: small;">{{dat|date:"M"}}<br>{{dat|date:"d"}}</p>
+            </a>
+         </div>
+      </div>
+   </div>
+</div>
+<div style="margin-left: 20px; margin-right: 20px; margin-top: 10px;">
+   <br>
+   <div class="avaliable">
+      <div class="avbl-element">
+         <div class="circle" style="background-color: #141514;">
+         </div>
+         <p>&nbsp;Selected Date: {{sel}}</p>
+      </div>
+      <div class="avbl-element">
+         <div class="circle" style="background-color: #4abd5d;">
+         </div>
+         <p>&nbsp;Availiable</p>
+      </div>
+      <div class="avbl-element">
+         <div class="circle" style="background-color:#f60;">
+         </div>
+         <p>&nbsp;Fast Filling</p>
+      </div>
+      <div class="avbl-element">
+         <div class="circle" style="background-color:#dc3545;">
+         </div>
+         <p>&nbsp;Almost Filled</p>
+      </div>
+   </div>
+   <hr>
+   <br>
+   {% for theatre in theatres %}
+   <div class="theatre">
+      <br>
+      <h4>{{theatre.theatre_name}}</h4>
+      <a href="{{theatre.theatre_map}}" style="text-decoration: none; :hover{text-decoration: underline;}"
+         target="_blank">
+         <h4 style="margin-left: 50px;">&#9432;</h4>
+      </a>
+      <p style="margin-top: 2px;">&#160;</p>
+      <div style="margin-left: 100px;">
+         {% if c1 %}
+         {% else %}
+         <a href="/{{city}}/movie/{{movie.movie_id}}/{{sel}}/{{theatre.theatre_name}}/11:00/"
+            class="btn btn-outline-success" role="button">11:00 AM</a>
+         {% endif %}
+         {% if c2 %}
+         {% else %}
+         <a href="/{{city}}/movie/{{movie.movie_id}}/{{sel}}/{{theatre.theatre_name}}/14:30/"
+            class="btn btn-outline-success" role="button">2:30 PM</a>
+         {% endif %}
+         {% if c3 %}
+         {% else %}
+         <a href="/{{city}}/movie/{{movie.movie_id}}/{{sel}}/{{theatre.theatre_name}}/18:00/"
+            class="btn btn-outline-success" role="button">6:00 PM</a>
+         {% endif %}
+         {% if c4 %}
+         {% else %}
+         <a href="/{{city}}/movie/{{movie.movie_id}}/{{sel}}/{{theatre.theatre_name}}/21:00/"
+            class="btn btn-outline-success" role="button">9:00 PM</a>
+         {% endif %}
+      </div>
+   </div>
+   <br>
+   <hr>
+   <br>
+   {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %} CineFare {% endblock %}
+{% block css %}
+<style>
+    .card {
+        margin-left: 20px;
+        margin-right: 8px;
+    }
+
+    .m1 {
+        display: flex;
+    }
+
+    .recommended {
+        margin-top: 50px;
+    }
+
+    .allmovies {
+        margin-top: 50px;
+    }
+
+    .movies {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- adscarousal -->
+<div id="adscarousal" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for i in noads %}
+        <button type="button" data-bs-target="#adscarousal" data-bs-slide-to="{{i}}" {% if forloop.first %}
+            class="active" aria-current="true" {% endif %} aria-label="Slide {{i|add:'1'}}"></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner ">
+        {% for ad in ads %}
+        <div class="carousel-item active">
+            <img src="{{ad.adpic}}" class="d-block w-100" alt="{{ad.ad_name}}">
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#adscarousal" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#adscarousal" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<br>
+<div>
+    <div class="dropdown" style="margin-left: 500px; margin-right: 10px !important;">
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{lang_filter|capfirst}}
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/{{city}}/gen/hindi/">Hindi</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/gen/telugu/">Telugu</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/gen/tamil/">Tamil</a></li>
+        </ul>
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{gen_filter|capfirst}}
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/{{city}}/action/lang/">Action</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/thriller/lang/">Thriller</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/drama/lang/">Drama</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/crime/lang/">Crime</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/comedy/lang/">Comedy</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/horror/lang/">Horror</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/romantic/lang/">Romantic</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/horror/lang/">Horror</a></li>
+            <li><a class="dropdown-item" href="/{{city}}/horror/lang/">Horror</a></li>
+        </ul>
+        <a class="btn btn-outline-success" href="/{{city}}/allmovies/">Remove Filters</a>
+    </div>
+</div>
+<!-- recommended movies -->
+<div class="recommended">
+    <div style="display: flex;">
+        <div style="margin-left: 30px; color: #007BFF;">
+            <h1 style="font-family: 'Trebuchet MS', Helvetica, sans-serif !important;"><b>Movies in Your location</b>
+            </h1>
+        </div>
+    </div>
+    <div class="movies m1">
+        {% for movie in movies %}
+        <div class="card" style="width: 18rem;">
+            <a href="/{{city}}/movie/{{movie.movie_id}}/">
+                <img src="{{movie.movie_poster}}" class="card-img-top" alt="{{movie.movie_title}}">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{movie.movie_title}}</h5>
+                <p class="card-text">{{movie.genre}}</p>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="movies m1">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

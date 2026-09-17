@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% block title %} CineFare {% endblock %}
+{% block css %}
+<style>
+    .card {
+        margin-left: 20px;
+        margin-right: 8px;
+    }
+
+    .m1 {
+        display: flex;
+    }
+
+    .recommended {
+        margin-top: 50px;
+    }
+
+    .allmovies {
+        margin-top: 50px;
+    }
+
+    .movies {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .rate {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10%;
+        margin: 0;
+    }
+
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
+        cursor: pointer;
+        font-size: 30px;
+        padding: 5px;
+    }
+
+    .rating label::before {
+        content: '\2605';
+        color: silver;
+        /* Set the default color of stars */
+    }
+
+    .rating input:checked~label::before,
+    .rating input:checked~input~label::before {
+        color: gold;
+    }
+
+    .cast {
+        margin-left: 30px;
+        margin-right: 20px;
+    }
+
+    .movie-details {
+        margin-left: 40px;
+        padding-top: 180px;
+        color: black;
+        display: flex;
+        align-items: center;
+    }
+
+    .movie-details .type {
+        font-weight: 500;
+    }
+
+    .movie-details .button {
+        margin-left: 80px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div style="background: linear-gradient(to bottom, #000000, #FFFFFF);">
+    <div
+        style="height: 400px; background-repeat: no-repeat; background-image: url(&quot;{{movie.bgi}}&quot;); background-position: center;">
+        <br><br><br><br><br><br><br><br><br><br>
+        <div style="display: flex;">
+            <div
+                style="margin-left: 90px; width: 300px; height: 300px; border: white 5px solid; border-radius: 100%; overflow: hidden;">
+                <a href="{{movie.trailer}}" target="_blank"><img style="width:100%;" src="{{movie.movie_poster}}"
+                        alt=""></a>
+            </div>
+            <div class="movie-details">
+                <div>
+                    <h1><b>{{movie.movie_title}}</b></h1>
+                    <p class="type">&#8226; 2h 44min &nbsp;&#8226;{{movie.genre}}&nbsp;&#8226; U/V&nbsp;</p>
+                </div>
+                <div class="rate-now" style="display: flex; justify-content: start; margin-left: 10px;  color: aliceblue; background: linear-gradient(to right, rgb(105, 105, 242), rgb(249, 74, 74));
+                    padding: 15px; border-radius: 10px;">
+                    <div>
+                        <h5>Add your rating</h5>
+                        <h6>Your ratings matter</h6>
+                        <p class="inline">{% if rate.numratings != 0 %}&starf; {{rate.rating}}/5 {% else %}
+                        <p>Not rated yet, Rate
+                            now!!</p>{% endif %} </p>
+                        <p class="inline">{% if rate.numratings != 0 %}{{rate.numratings}} votes&gt;{% endif %}</p>
+                    </div>
+                    <div style="margin-left: 40px; display: flex; align-items: center;">
+                        {% if user.is_anonymous %}
+                        <b>Please login to post a review</b>
+                        {% else %}
+                        <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                            data-bs-target="#ratingModal">
+                            Rate Now
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="m-booking button" style="margin-top: 30px;">
+                    <a type="button" href="alltheatres/{{date}}/" class="btn btn-danger btn-lg">Book Tickets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rate now Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div style="display: flex; justify-content: center;">
+                    <h1>Rate Here</h1>
+                </div>
+                <div class="rate">
+                    <form action="/{{city}}/ratenow/" method="post">
+                        {% csrf_token %}
+                        <div class="rating">
+                            <input type="radio" id="star1" name="user_rate" value="1">
+                            <label for="star1"></label>
+                            <input type="radio" id="star2" name="user_rate" value="2">
+                            <label for="star2"></label>
+                            <input type="radio" id="star3" name="user_rate" value="3">
+                            <label for="star3"></label>
+                            <input type="radio" id="star4" name="user_rate" value="4">
+                            <label for="star4"></label>
+                            <input type="radio" id="star5" name="user_rate" value="5">
+                            <label for="star5"></label>
+                        </div>
+                        <input type="hidden" name="movie_id" value="{{movie.movie_id}}">
+                        <button type="submit" class="btn btn-primary" style="margin-left: 55px;">Rate</button>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- about movie -->
+<br><br><br><br><br><br><br><br><br><br>
+<hr>
+<div style="margin-left: 3%;">
+    <h4><b>About Movie</b></h4>
+    <p>{{movie.desc}}</p>
+</div>
+<hr>
+<!-- crew and Cast -->
+<div style="margin-left: 3%;"">
+    <h4><b>Cast & Crew</b></h4>
+</div>
+<div class=" m-cast" style="display: flex;">
+    <div class="cast">
+        <img src="{{movie.heroimg}}"
+            style="border-radius: 100%;transition: transform 0.3s ease; :hover{transform: scale(1.2);}" alt="hero"
+            height="150px">
+        <div style="text-align: center; margin-top: 15px;">
+            <h4>{{movie.hero_name}}</h4>
+            <p>Hero</p>
+        </div>
+    </div>
+    <div class="cast">
+        <img src="{{movie.heroineimg}}" style="border-radius: 100%; " alt="hero" height="150px">
+        <div style="text-align: center; margin-top: 15px;">
+            <h4>{{movie.heroine_name}}</h4>
+            <p>Heroine</p>
+        </div>
+    </div>
+    <div class="cast">
+        <img src="{{movie.sideactorimg}}" alt="hero" style="border-radius: 100%;" height="150px">
+        <div style="text-align: center; margin-top: 15px;">
+            <h4>{{movie.sideactor_name}}</h4>
+            <p>Actor</p>
+        </div>
+    </div>
+    <div class="cast">
+        <img src="{{movie.directorimg}}" alt="hero" style="border-radius: 100%; " height="150px">
+        <div style="text-align: center; margin-top: 15px;">
+            <h4>{{movie.director_name}}</h4>
+            <p>Director</p>
+        </div>
+    </div>
+    <div class="cast">
+        <img src="{{movie.producerimg}}" alt="hero" style="border-radius: 100%; " height="150px">
+        <div style="text-align: center; margin-top: 15px;">
+            <h4>{{movie.producer_name}}</h4>
+            <p>Producer</p>
+        </div>
+    </div>
+</div>
+<hr>
+<!-- you might also like -->
+<div class="recommended">
+    <div style="margin-left: 30px; color: #007BFF;">
+        <h1 style="font-family: 'Trebuchet MS', Helvetica, sans-serif !important;"><b>You might also like!</b></h1>
+    </div>
+    <div class="movies m1">
+        {% for movie in liked|slice:":5" %}
+        <div class="card" style="width: 18rem;">
+            <a href="/{{city}}/movie/{{movie.movie_id}}/">
+                <img src="{{movie.movie_poster}}" class="card-img-top" alt="{{movie.movie_title}}">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{movie.movie_title}}</h5>
+                <p class="card-text">{{movie.genre}}</p>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="movies m1">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<!-- comments -->
+<div class="container">
+    <h2>Reviews</h2>
+    {% if user.is_anonymous %}
+    <b>Please login to post a review</b>
+    {% else %}
+    <div class="my-2">
+        <form action="/{{city}}/postComment/" method="post">{% csrf_token %}
+            <div class="form-group d-flex">
+                <input type="text" class="form-control" name="comment" id="comment" aria-describedby="emailHelp"
+                    placeholder="Enter your Review" style="width: 80%; margin-right:1%;">
+                <input type="hidden" name="movie_id" value="{{movie.movie_id}}">
+                <button type="submit" class="btn btn-primary">Post</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    {% for comment in comments %}
+    <div class="row m-3">
+        <div class="col-md-1"><img src="https://static.thenounproject.com/png/5034901-200.png" alt="{{comment.user}}"
+                style="height: 50px;"></div>
+
+        <div class="col-md-11 ">
+            <b>{{comment.user.username}}</b> at {{comment.timestamp}}
+            <div>{{comment.comment}}</div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

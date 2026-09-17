@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+</head>
+
+<body style="margin-top: 70px;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" style="background-color: rgb(58, 55, 55) !important;">
+        <div class="container-fluid">
+            <a href="/"><img src="Images/logolight.png" alt="CineFare" width="50" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex" style="width: 500px;" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <div class="button" >
+                        <button type="submit"><span></span>Search</button>
+                    </div>
+                </form>
+                <ul class="navbar-nav" style="margin-left: auto;">
+                    <li class="nav-item" style="margin-right: 50px;">
+                        <!-- Button for Location -->
+                        <div class="button" data-bs-toggle="modal"
+                        data-bs-target="#locationModal">
+                            <button><span></span>Location</button>
+                        </div>
+                        <!-- Location Modal -->
+                        <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModal"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="locationModal">Popular cities</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul>
+                                            <li><a class="dropdown-item" href="#">Mumbai</a></li>
+                                            <li><a class="dropdown-item" href="#">Delhi</a></li>
+                                            <li><a class="dropdown-item" href="#">Bengaluru</a></li>
+                                            <li><a class="dropdown-item" href="#">Hyderabad</a></li>
+                                            <li><a class="dropdown-item" href="#">Chennai</a></li>
+                                            <li><a class="dropdown-item" href="#">Kolkata</a></li>
+                                            <li><a class="dropdown-item" href="#">Kochi</a></li>
+                                            <li><a class="dropdown-item" href="#">Indore</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer p-1">
+                                        <a href="#" class="btn btn-primary btn-sm">View all cities</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item" style="margin-right: 10px;">
+                        <!-- Button for Login -->
+                        <div class="button" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">
+                            <button><span></span>Login</button>
+                        </div>
+                        <!-- Login Modal -->
+                        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="loginModal">Login</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="username">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    placeholder="Enter an unique username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass1">Password</label>
+                                                <input type="password" class="form-control" id="pass1" name="pass1"
+                                                    placeholder="Enter your password">
+                                            </div>
+                                            <button type="button" class="bttn">Login</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item" style="margin-right: 10px;">
+                        <!-- Button for SignUp -->
+                        <div class="button" data-bs-toggle="modal" data-bs-target="#signupModal">
+                            <button><span></span>SignUp</button>
+                        </div><!-- 
+                        <button type="button" class="bttn" data-bs-toggle="modal" data-bs-target="#signupModal"><span
+                                class="sp"></span>
+                            SignUp
+                        </button> SignUp Modal -->
+                        <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="signupModal">SignUp</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group " style="display: inline;">
+                                                <label for="username">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    placeholder="Enter a unique username"
+                                                    style="border: none; width:auto; :hover{box-shadow: #007bff;}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="fname">First Name</label>
+                                                <input type="text" class="form-control" id="fname" name="fname"
+                                                    placeholder="Enter your First Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lname">Last Name</label>
+                                                <input type="text" class="form-control" id="lname" name="lname"
+                                                    placeholder="Enter your Last Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mobileno">Mobile Number</label>
+                                                <input type="text" class="form-control" id="mobileno" name="mobileno"
+                                                    placeholder="Confirm your password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass1">Password</label>
+                                                <input type="password" class="form-control" id="pass1" name="pass1"
+                                                    placeholder="Enter your password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass2">Confirm Password</label>
+                                                <input type="password" class="form-control" id="pass2" name="pass2"
+                                                    placeholder="Confirm your password">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">SignUp</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <div class="cinema-logo m-0"
+        style=" display:flex;background-color:linear-gradient(90deg, rgb(26, 26, 26) 24.97%, rgb(26, 26, 26) 38.3%, rgba(26, 26, 26, 0.04) 97.47%, rgb(26, 26, 26) 100%) ; background-image: linear-gradient(90deg, rgb(26, 26, 26) 24.97%, rgb(26, 26, 26) 38.3%, rgba(26, 26, 26, 0.04) 97.47%, rgb(26, 26, 26) 100%), url(&quot;https://assets-in.bmscdn.com/iedb/movies/images/mobile/listing/xxlarge/mission-raniganj-et00362090-1696831881.jpg&quot;); padding:50px 0; background-color: rgb(26, 26, 26); background-repeat: no-repeat; padding-left: auto; background-position: 250px;">
+        <div class="trailer">
+            <div class="card" style="width: 18rem; background: transparent;">
+                <a href="https://youtu.be/TcMBFSGVi1c?si=HbjEjbrXQqgJgP59">
+                    <img src="https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/leo-et00351731-1675663884.jpg"
+                        class="card-img-top" alt="Movie 1">
+                </a>
+            </div>
+        </div>
+        <div class="m-details" style="margin-left: 50px; color: aliceblue;">
+            <br>
+            <h1>Movie 1</h1>
+            <br>
+            <h2 class="inline">&starf; 1.2/10 </h2>
+            <p class="inline">487k votes&gt;</p>
+            <div class="rate-now"
+                style="display: flex; margin-top: 15px; background-color: rgb(51, 51, 51); padding: 15px; border-radius: 10px;">
+                <div>
+                    <h5>Add your rating &amp; review</h5>
+                    <h6>Your ratings matter</h6>
+                </div>
+                <div style="margin-left: 40px; display: flex; align-items: center;">
+                    <button class="btn btn-light ">Rate Now</button>
+                </div>
+            </div>
+            <br>
+            <div style="display: flex;">
+                <h4
+                    style="background-color: rgb(229, 229, 229); color: rgb(0, 0, 0); padding: 0px 5px 4px 5px; border-radius: 2px; margin-right:3px; align-self:flex-start;">
+                    2D</h4>
+                <h4
+                    style="background-color: rgb(229, 229, 229); color: rgb(0, 0, 0); padding: 0px 5px 4px 5px; border-radius: 2px; align-self: flex-start;">
+                    Language</h4>
+            </div>
+            <p>&#8226; 2h 44min &nbsp;&#8226; Genre &nbsp;&#8226; Type &nbsp;&#8226; Release Date </p>
+            <div class="m-booking" style="margin-top: 30px;">
+                <a type="button" href="Booking.html" class="btn btn-danger btn-lg">Book Tickets</a>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 8px 0px; display: flex; padding:15px; position: sticky; top: 0; margin-top: 20px; background-color:white; margin-right: 150px;">
+        <div>
+            <h1>Leo</h1>
+            <p class="inline">&starf; 1.2/10 </p><p class="inline">487k votes&gt;</p>
+        </div>
+        <button class="btn btn-danger" style="margin-left: auto;">Book Tickets</button>
+    </div> -->
+    <hr>
+    <div class="m-about">
+        <h4 style="font-size: 200%;"><b>About the Movie</b></h4>
+        <p style="font-size: larger;">A cafe owner becomes a local hero but his actions being forth consequences from a
+            dangerous world that can shake his carefully constructed life.</p>
+    </div>
+    <hr>
+    <div style="margin-left: 20px;">
+        <h4><b>Cast &amp; Crew</b></h4>
+    </div>
+    <div class="m-cast">
+        <div class="cast">
+            <img src="https://in.bmscdn.com/iedb/artist/images/website/poster/large/vijay-2461-20-12-2017-04-37-08.jpg"
+                style="border-radius: 100%;transition: transform 0.3s ease; :hover{transform: scale(1.2);}" alt="hero"
+                height="150px">
+            <div style="text-align: center; margin-top: 15px;">
+                <h4>Vijay Thalapathy</h4>
+                <p>as Leo Das</p>
+            </div>
+        </div>
+        <div class="cast">
+            <img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/trisha-krishnan-15856-18-09-2017-06-05-18.jpg"
+                style="border-radius: 100%; " alt="hero" height="150px">
+            <div style="text-align: center; margin-top: 15px;">
+                <h4>Trisha Krishnan</h4>
+                <p>as Satya</p>
+            </div>
+        </div>
+        <div class="cast">
+            <img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/lokesh-kanakaraj-1065304-24-03-2017-16-24-31.jpg"
+                alt="hero" style="border-radius: 100%;" height="150px">
+            <div style="text-align: center; margin-top: 15px;">
+                <h4>Lokesh Kanagaraj</h4>
+                <p>Director</p>
+            </div>
+        </div>
+        <div class="cast">
+            <img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/s-s-lalit-kumar-2017807-1663651960.jpg"
+                alt="hero" style="border-radius: 100%; " height="150px">
+            <div style="text-align: center; margin-top: 15px;">
+                <h4>SS Lalit Kumar</h4>
+                <p>Producer</p>
+            </div>
+        </div>
+        <div class="cast">
+            <img src="https://assets-in.bmscdn.com/iedb/artist/images/website/poster/large/sanjay-dutt-2035-12-09-2017-05-07-10.jpg"
+                alt="hero" style="border-radius: 100%; " height="150px">
+            <div style="text-align: center; margin-top: 15px;">
+                <h4>Sanjay Dutt</h4>
+                <p>as Antony das</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div style="margin-left: 20px;">
+        <h4><b>You might also like</b></h4>
+    </div>
+    <div class="movies m1">
+        <div class="card" style="width: 18rem;">
+            <a href="movie.html">
+                <img src="Images/logo.png" class="card-img-top" alt="Movie 1">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">Movie 1</h5>
+                <p class="card-text">Genre 1</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <a href="movie.html">
+                <img src="Images/logo.png" class="card-img-top" alt="Movie 2">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">Movie 2</h5>
+                <p class="card-text">Genre 2</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <a href="movie.html">
+                <img src="Images/logo.png " class="card-img-top" alt="Movie 3">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">Movie 3</h5>
+                <p class="card-text">Genre 3</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <a href="movie.html">
+                <img src="Images/logo.png" class="card-img-top" alt="Movie 4">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">Movie 4</h5>
+                <p class="card-text">Genre 4</p>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <a href="movie.html">
+                <img src="Images/logo.png" class="card-img-top" alt="Movie 4">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">Movie 4</h5>
+                <p class="card-text">Genre 4</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">Copyright &copy; 2023 All Rights Reserved by
+                        <a href="#">CineFare</a>.
+                    </p>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <ul class="social-icons">
+                        <li><a class="facebook" href="https://www.instagram.com/saipranaydeep/"><img
+                                    src="Images\facebook.ico" width="30px" alt=""></a></li>
+                        <li><a class="twitter" href="https://www.instagram.com/b._rithvik/"><img
+                                    src="Images\twitter.ico" width="30px" alt=""></a></li>
+                        <li><a class="insta" href="#"><img src="Images/insta.ico" width="30px" alt=""></a></li>
+                        <li><a class="linkedin" href="#"><img src="Images\linkedin.ico" width="30px" alt=""></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

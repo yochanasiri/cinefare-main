@@ -1,0 +1,468 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="icon" href="{% static 'icon.ico' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    {% block css %} {% endblock %}
+    <style>
+        .site-footer {
+            padding: 45px 0 20px;
+            font-size: 15px;
+            line-height: 24px;
+            background-color: rgb(51, 51, 56);
+            color: white;
+        }
+
+        .site-footer hr {
+            border-top-color: #bbb;
+            opacity: 0.5
+        }
+
+        .site-footer hr.small {
+            margin: 20px 0
+        }
+
+        .site-footer h6 {
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            letter-spacing: 2px
+        }
+
+        .site-footer a {
+            color: white;
+        }
+
+        .site-footer a:hover {
+            font-weight: bold;
+        }
+
+        .footer-links {
+            padding-left: 0;
+            list-style: none
+        }
+
+        .footer-links li {
+            display: block
+        }
+
+        .footer-links a {
+            color: #737373
+        }
+
+        .footer-links a:active,
+        .footer-links a:focus,
+        .footer-links a:hover {
+            color: #3366cc;
+            text-decoration: none;
+        }
+
+        .footer-links.inline li {
+            display: inline-block
+        }
+
+        .site-footer .social-icons {
+            text-align: right
+        }
+
+        .site-footer .social-icons a {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            margin-left: 6px;
+            margin-right: 0;
+            border-radius: 100%;
+            background-color: #33353d
+        }
+
+        .copyright-text {
+            margin: 0
+        }
+
+        @media (max-width:991px) {
+            .site-footer [class^=col-] {
+                margin-bottom: 30px
+            }
+        }
+
+        @media (max-width:767px) {
+            .site-footer {
+                padding-bottom: 0
+            }
+
+            .site-footer .copyright-text,
+            .site-footer .social-icons {
+                text-align: center
+            }
+        }
+
+        .social-icons {
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none
+        }
+
+        .social-icons li {
+            display: inline-block;
+            margin-bottom: 4px
+        }
+
+        .social-icons li.title {
+            margin-right: 15px;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 13px
+        }
+
+        .social-icons a {
+            font-size: 16px;
+            line-height: 44px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .social-icons.size-sm a {
+            line-height: 34px;
+            height: 34px;
+            width: 34px;
+            font-size: 14px
+        }
+
+        .facebook {
+            transition: transform 0.3s;
+        }
+
+        .facebook:hover img {
+            transform: scale(1.2);
+        }
+
+        .insta {
+            transition: transform 0.3s;
+        }
+
+        .insta:hover img {
+            transform: scale(1.2);
+        }
+
+        .twitter {
+            transition: transform 0.3s;
+        }
+
+        .twitter:hover img {
+            transform: scale(1.2);
+        }
+
+        .linkedin {
+            transition: transform 0.3s;
+        }
+
+        .linkedin:hover img {
+            transform: scale(1.2);
+        }
+
+        @media (max-width:767px) {
+            .social-icons li.title {
+                display: block;
+                margin-right: 0;
+                font-weight: 600;
+            }
+        }
+
+        #userAbout {
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body style="font-family: 'Trebuchet MS', Helvetica, sans-serif !important;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: rgb(56,56,62) !important;">
+        <div class="container-fluid">
+            <div class="logo" style="display: flex; align-items: center;">
+                <a href="/{{city}}/"><img src="{% static 'logolight2.png' %}" alt="CineFare" width="50" /></a>
+                <a class="logo-text ml-4" style="text-decoration: none; color: white;" href="/{{city}}/">
+                    <h1>cinefare</h1>
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 290px">
+                <form action="/{{city}}/search_movies/" method="post" class="d-flex" style="width: 500px;"
+                    role="search">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" name="search_movies"
+                        aria-label="Search" />
+                    <button class="btn btn-outline-light" type="submit">
+                        Search
+                    </button>
+                </form>
+                <div style="margin-left: auto">
+                    <!-- Button for Location -->
+                    <button type="button" class="btn btn-primary " style="margin-right: 50px" id="locationButton"
+                        data-bs-toggle="modal" data-bs-target="#locationModal">
+                        {{city|capfirst}}
+                    </button>
+                    {% if user.is_anonymous %}
+                    <a type="button" class="btn btn-primary btn-sm" href="/{{city}}/login/">
+                        Login/SignUp
+                    </a>
+                    {% else %}
+                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#userAbout" aria-controls="userAbout">
+                        {{request.user}}
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Location Modal -->
+    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Select Your Location</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="bwc__sc-ttnkwg-4 Ettpg">
+                        <h3 class="bwc__sc-ttnkwg-5 eGoIVD" style="text-align: center;">Popular Cities</h3>
+                        <ul class="bwc__sc-ttnkwg-15 gZrltM" style="list-style-type:none ;">
+                            <li class="bwc__sc-ttnkwg-18 KUowN">
+                                <div style="display: flex;">
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/mumbai/"><img
+                                                    style="width: 180px;"
+                                                    src="https://i.pinimg.com/736x/9c/ab/d3/9cabd3905250fc2c2d320d1625d57a62.jpg"
+                                                    alt="MUMBAI" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR" style="margin-left: 55px;">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/delhi/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/29/df/a8/29dfa8df062a68f7347dddc6dc7104b6.jpg"
+                                                    alt="NCR" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            </li>
+                            <li class="bwc__sc-ttnkwg-18 KUowN">
+                                <div style="display: flex;">
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/bengaluru/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/c6/41/00/c64100f284e131bb91ded21c2d6784e2.jpg"
+                                                    alt="BANG" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR" style="margin-left: 55px;">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/hyderabad/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/c8/7f/0e/c87f0e599576f304cb9a4f4ca4ab2109.jpg"
+                                                    alt="HYD" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            </li>
+                            <li class="bwc__sc-ttnkwg-18 KUowN">
+                                <div style="display: flex;">
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/indore/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/58/de/ac/58deacb8e41fc718fb209b5c949a9c63.jpg"
+                                                    alt="AHD" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR" style="margin-left: 55px;">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/kochi/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/58/27/5a/58275a31d97f3d2c9e9373ba68e324cb.jpg"
+                                                    alt="KOCH" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="bwc__sc-ttnkwg-18 KUowN">
+                                <div style="display: flex;">
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/chennai/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/cf/94/bb/cf94bb2e1bc2e473c6dd61a9df5ba456.jpg"
+                                                    alt="CHEN" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                    <div class="bwc__sc-ttnkwg-19 hkqhSR" style="margin-left: 55px;">
+                                        <div class="bwc__sc-ttnkwg-17 gvzyfS"><a href="/kolkata/"><img width="180px"
+                                                    src="https://i.pinimg.com/736x/b0/8e/21/b08e21c1ff6816876265a6f5f20a6d2a.jpg"
+                                                    alt="KOLK" class="bwc__sc-ttnkwg-26 izPSOY"></a></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Details Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModal">Change required Fields</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/{{city}}/edit/" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control my-1" id="fname" name="fname"
+                                placeholder="Old:{{request.user.first_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control my-1" id="lname" name="lname"
+                                placeholder="Old:{{request.user.last_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control my-1" id="email" name="email"
+                                placeholder="Old:{{request.user.email}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobileno">Mobile Number</label>
+                            <input type="text" class="form-control my-1" id="mobileno" name="mobileno"
+                                placeholder="Old:9999999999">
+                        </div>
+                        <button type="submit" class="btn btn-primary my-2 my-1">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Off canvas end -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="userAbout" aria-labelledby="userAbout">
+        <div class="offcanvas-header">
+            <h3 class="offcanvas-title" id="userAbout" style="color: #336699; font-size: 24px;">Welcome
+                {{request.user.first_name}}!!</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <hr>
+        <div class="offcanvas-body">
+            <div>
+                <h4 style="color: #333;">Personal Details :</h4>
+                <h5 style="color: #666;">Username: {{request.user.username}}</h5>
+                <h5 style="color: #666;">First Name: {{request.user.first_name}}</h5>
+                <h5 style="color: #666;">Last Name: {{request.user.last_name}}</h5>
+                <h5 style="color: #666;">Email: {{request.user.email}}</h5>
+                <h5 style="color: #666;">Mobile Number: 1234567890</h5>
+            </div>
+            <hr>
+            <div>
+                <h4 style="color: #333;">Your Bookings :</h4>
+                {% if len == 0 %}
+                <p class="m-2" style="color: #900;"><b>No Bookings!!</b></p>
+                <hr>
+                {% endif %}
+                {% for book in booked %}
+                <div style="display: flex; justify-content: space-between; border: #33353d;">
+                    <div>
+                        <h6 style="color: #666;">Date: {{book.date}}</h6>
+                        <h6 style="color: #666;">Movie: {{book.movie}}</h6>
+                        <h6 style="color: #666;">Show: {{book.show}}</h6>
+                        <h6 style="color: #666;">Theatre: {{book.theatre}}</h6>
+                        <h6 style="color: #666;">Seat: {{book.seat_no}}</h6>
+                        <a href="/{{city}}/{{book}}/generate_pdf/" download="cinefare_booking.pdf" class="btn btn-danger btn-sm">Download Ticket</a>
+                    </div>
+                    <div><img style=" height: 130px;" src="{{book.movie.movie_poster}}" alt="poster"></div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+            <div>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#editModal" style="background-color: #336699; color: #fff;">
+                    Edit Details
+                </button>
+                <a href="/{{city}}/logout/" class="btn btn-danger"
+                    style="margin-left: 55%; background-color: #900; color: #fff;">Logout</a>
+            </div>
+            <div style="margin-left: 80%;">
+            </div>
+
+        </div>
+    </div>
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong>Message: </strong>{{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    {% block body %} {% endblock %}
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <p class="copyright-text">Copyright &copy; 2023 All Rights Reserved by <a href="#">CineFare</a>.</p>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <ul class="social-icons">
+                        <li><a class="insta" href="https://www.instagram.com/saipranaydeep/"><img
+                                    src="{% static 'instagram.ico' %}" width="30px" alt="" target="_blank"></a></li>
+                        <li><a class="facebook" href="https://www.instagram.com/saipranaydeep/" target="_blank"><img
+                                    src="{% static 'facebook.ico' %}" width="30px" alt=""></a></li>
+                        <li><a class="twitter" href="https://www.instagram.com/b._rithvik/" target="_blank"><img
+                                    src="{% static 'twitter.ico' %}" width="30px" alt="" target="_blank"></a></li>
+                        <li><a class="linkedin" href="https://www.instagram.com/saipranaydeep/"><img
+                                    src="{% static 'linkedin.ico' %}" width="30px" alt="" target="_blank"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; position: relative; margin: 20px 0 40px 0;">
+                <div style="position: absolute; top: 50%; left: 0; transform: translate(0, -50%);">
+                    <hr
+                        style="width: 600px; display: inline-block; margin: 0; border: none; background-color: white; height: 0.5px;">
+                </div>
+                <div style="position: absolute; top: 50%; right: 0; transform: translate(0, -50%);">
+                    <hr
+                        style="width: 600px; display: inline-block; margin: 0; border: none; background-color: white; height: 0.5px;">
+                </div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <!-- Set the width of the image to 60px -->
+                    <img src="{% static 'confirm.png' %}" alt="Logo" style="width: 60px;">
+                </div>
+            </div>
+
+            <div style="display: flex;">
+                <div>
+                    <h4>Meet Our Team</h4>
+                    <p style="color: #aaabad;">
+                        Sai Pranay Deep |
+                        B Rithvik |
+                        Sai Ruchitha |
+                        Hema Deepika
+                    </p>
+                </div>
+                <div style="margin-left: auto;">
+                    <h4>Contact US</h4>
+                    <a href="tel:+918639065627?text=Hello%20Sai%20Pranay%20Deep,%20I%20have%20a%20question."
+                        target="_blank">Whatsapp</a> |
+                    <a href="mailto:cse220001034@iiti.ac.in">Mail</a> |
+                    <a href="tel:+918639065627">phone</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
+    {% block js %}
+    {% endblock %}
+</body>
+
+</html>

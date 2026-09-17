@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Cinefare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #242333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .pay-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px 40px;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .pay-card h5 {
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .detail-row .label {
+            color: #888;
+        }
+
+        .total-row {
+            border-top: 1px solid #ddd;
+            margin-top: 12px;
+            padding-top: 12px;
+            font-size: 1.15rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%; max-width: 480px;">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if state == 'success' %}
+    <div class="pay-card text-center">
+        <h1 style="color: green;">Payment Successful!</h1>
+        <p class="text-muted">Your booking is confirmed.</p>
+        <div class="text-start mt-4">
+            <div class="detail-row"><span class="label">Movie</span><span>{{booking.movie.movie_title}}</span></div>
+            <div class="detail-row"><span class="label">Theatre</span><span>{{booking.theatre.theatre_name}}</span></div>
+            <div class="detail-row"><span class="label">Date</span><span>{{booking.date}}</span></div>
+            <div class="detail-row"><span class="label">Show</span><span>{{booking.show}}</span></div>
+            <div class="detail-row"><span class="label">Seats</span><span>{{booking.seat_no}}</span></div>
+            <div class="detail-row total-row"><span>Paid</span><span>&#8377;{{amount_rupees}}</span></div>
+        </div>
+        <div class="mt-4">
+            <a href="/{{city}}/{{booking}}/generate_pdf/" download="cinefare_booking.pdf"
+                class="btn btn-danger">Download Ticket</a>
+            <a href="/{{city}}/" class="btn btn-outline-secondary">Home</a>
+        </div>
+    </div>
+
+    {% elif state == 'gone' %}
+    <div class="pay-card text-center">
+        <h1 style="color: #900;">Booking not active</h1>
+        <p class="text-muted">This booking was cancelled or the seat hold expired before payment was completed.
+            Your seats have been released.</p>
+        <div class="mt-4">
+            <a href="{{back_url}}" class="btn btn-danger">Choose Seats Again</a>
+            <a href="/{{city}}/" class="btn btn-outline-secondary">Home</a>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="pay-card">
+        <h5>Confirm &amp; Pay</h5>
+        <div class="detail-row"><span class="label">Movie</span><span>{{booking.movie.movie_title}}</span></div>
+        <div class="detail-row"><span class="label">Theatre</span><span>{{booking.theatre.theatre_name}}</span></div>
+        <div class="detail-row"><span class="label">Date</span><span>{{booking.date}}</span></div>
+        <div class="detail-row"><span class="label">Show</span><span>{{booking.show}}</span></div>
+        <div class="detail-row"><span class="label">Seats</span><span>{{booking.seat_no}}</span></div>
+        <div class="detail-row total-row"><span>Total</span><span>&#8377;{{amount_rupees}}</span></div>
+        <p class="text-muted mt-3" style="font-size: 0.85rem;">Your seats are held for {{hold_minutes}} minutes.
+            If payment is not completed in time, they will be released.</p>
+        <div class="d-grid gap-2 mt-3">
+            <button id="pay-btn" class="btn btn-danger btn-lg">Pay &#8377;{{amount_rupees}}</button>
+            <a href="/{{city}}/payment/{{booking.pk}}/cancel/" class="btn btn-outline-secondary">Cancel and release
+                seats</a>
+        </div>
+    </div>
+
+    <form id="verify-form" method="post" action="/{{city}}/payment/{{booking.pk}}/verify/">
+        {% csrf_token %}
+        <input type="hidden" name="razorpay_payment_id" value="">
+        <input type="hidden" name="razorpay_order_id" value="">
+        <input type="hidden" name="razorpay_signature" value="">
+    </form>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        let paymentDone = false;
+
+        const options = {
+            key: "{{razorpay_key_id}}",
+            amount: "{{amount}}",
+            currency: "INR",
+            name: "Cinefare",
+            description: "Book Watch Enjoy!!",
+            image: "{% static 'icon.ico' %}",
+            order_id: "{{booking.razorpay_order_id}}",
+            prefill: {
+                name: "{{request.user.first_name}}",
+                email: "{{request.user.email}}"
+            },
+            theme: { color: "#F37254" },
+            handler: function (response) {
+                // Payment completed in the modal — send the ids + signature to the
+                // server for verification. The booking is only confirmed there.
+                paymentDone = true;
+                const form = document.getElementById('verify-form');
+                form.razorpay_payment_id.value = response.razorpay_payment_id;
+                form.razorpay_order_id.value = response.razorpay_order_id;
+                form.razorpay_signature.value = response.razorpay_signature;
+                form.submit();
+            },
+            modal: {
+                ondismiss: function () {
+                    // User closed the checkout without paying — release the hold.
+                    if (!paymentDone) {
+                        window.location.href = "/{{city}}/payment/{{booking.pk}}/cancel/";
+                    }
+                }
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        document.getElementById('pay-btn').addEventListener('click', function () {
+            rzp.open();
+        });
+    </script>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

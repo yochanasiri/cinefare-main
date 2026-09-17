@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %} CineFare {% endblock %}
+{% block css %}
+<style>
+    .card {
+        margin-left: 20px;
+        margin-right: 8px;
+    }
+
+    .m1 {
+        display: flex;
+    }
+
+    .recommended {
+        margin-top: 50px;
+    }
+
+    .allmovies {
+        margin-top: 50px;
+    }
+
+    .movies {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- searched movies -->
+<div class="recommended">
+    <div style="display: flex;">
+        <div style="margin-left: 30px; color: rgb(193, 108, 33);">
+            <h2><b>Movies</b></h2>
+        </div>
+    </div>
+    <div class="movies m1">
+        {% for movie in movies %}
+        <div class="card" style="width: 18rem;">
+            <a href="/{{city}}/movie/{{movie.movie_id}}/">
+                <img src="{{movie.movie_poster}}" class="card-img-top" alt="{{movie.movie_title}}">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{movie.movie_title}}</h5>
+                <p class="card-text">{{movie.genre}}</p>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="movies m1">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
